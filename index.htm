@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html lang="ar">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>نار وثلج</title>
+
+<style>
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body { height: 100%; width: 100%; overflow: hidden; font-family: 'Poppins', sans-serif; background-color: #000; direction: rtl; }
+
+
+
+    /* الفيديو الخلفي */
+
+    .bg-video {
+
+        position: fixed;
+
+        top: 0; left: 0;
+
+        width: 100%; height: 100%;
+
+        object-fit: cover;
+
+        filter: blur(12px) brightness(0.5);
+
+        z-index: 1;
+
+    }
+
+
+
+    /* حاوية الفيديو الرئيسي (متمركز تمامًا) */
+
+    .main-container {
+
+        position: fixed;
+
+        top: 50%; left: 50%;
+
+        transform: translate(-50%, -50%);
+
+        z-index: 2;
+
+        text-align: center;
+
+        width: 100%;
+
+        pointer-events: none; /* يسمح للزر داخل الفيديو فقط بالتفاعل */
+
+    }
+
+
+
+    /* الفيديو الرئيسي */
+
+    .main-video {
+
+        width: 90%;
+
+        max-width: 920px;
+
+        border-radius: 16px;
+
+        border: 2px solid rgba(255,255,255,0.22);
+
+        box-shadow: 0 0 60px rgba(255,255,255,0.12);
+
+        pointer-events: auto;
+
+        display: block;
+
+        margin: 0 auto;
+
+    }
+
+
+
+    /* زر التشغيل (في منتصف الفيديو) */
+
+    .play-btn {
+
+        position: absolute;
+
+        top: 50%;
+
+        left: 50%;
+
+        transform: translate(-50%, -50%);
+
+        z-index: 3;
+
+        width: 88px; height: 88px;
+
+        border-radius: 50%;
+
+        background: linear-gradient(135deg, rgba(255,84,0,0.18), rgba(255,160,54,0.12));
+
+        border: 2px solid rgba(255,255,255,0.18);
+
+        display: flex; justify-content: center; align-items: center;
+
+        cursor: pointer;
+
+        transition: transform 0.18s ease, background 0.18s;
+
+        pointer-events: auto;
+
+        backdrop-filter: blur(2px);
+
+    }
+
+    .play-btn:hover { transform: translate(-50%, -50%) scale(1.06); }
+
+    .play-btn::before {
+
+        content: '';
+
+        display: block;
+
+        width: 0; height: 0;
+
+        border-left: 26px solid #fff;
+
+        border-top: 16px solid transparent;
+
+        border-bottom: 16px solid transparent;
+
+        margin-left: 6px;
+
+        opacity: 0.98;
+
+    }
+
+
+
+    /* زر التوثيق (ثابت أعلى يمين) */
+
+    .verified-badge {
+
+        position: fixed;
+
+        top: 18px;
+
+        right: 18px;
+
+        z-index: 5;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        background: linear-gradient(90deg, #100F14, #0D0D0D);
+
+        color: #fff;
+
+        padding: 10px 14px;
+
+        border-radius: 999px;
+
+        box-shadow: 0 6px 18px rgba(255,80,0,0.25);
+
+        text-decoration: none;
+
+        font-weight: 600;
+
+        font-size: 14px;
+
+        transition: transform .15s ease, box-shadow .15s;
+
+    }
+
+    .verified-badge:hover {
+
+        transform: translateY(-3px);
+
+        box-shadow: 0 12px 30px rgba(255,80,0,0.32);
+
+    }
+
+    .verified-icon {
+
+        width: 34px; height: 34px;
+
+        background: rgba(255,255,255,0.12);
+
+        border-radius: 50%;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border: 1px solid rgba(255,255,255,0.16);
+
+    }
+
+    .verified-icon svg { width: 18px; height: 18px; fill: white; }
+
+
+
+    /* في الشاشات الصغيرة نخلي الزر أصغر */
+
+    @media (max-width: 420px) {
+
+        .play-btn { width: 72px; height: 72px; }
+
+        .play-btn::before { border-left: 22px solid #fff; border-top: 12px solid transparent; border-bottom: 12px solid transparent; }
+
+        .verified-badge { padding: 8px 12px; font-size: 13px; right: 12px; top: 12px; }
+
+        .verified-icon { width: 30px; height: 30px; }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+
+
+    <!-- فيديو الخلفية (مضبب ومكرر نفس الملف RS.mp4) -->
+
+    <video class="bg-video" autoplay loop muted playsinline>
+
+        <source src="PS.mp4" type="video/mp4">
+
+    </video>
+
+
+
+    <!-- زر التوثيق (يرتبط بحساب تيليجرام y2036) -->
+
+    <a class="verified-badge" href="https://t.me/y2036" target="_blank" rel="noopener noreferrer" aria-label="توثيق - افتح تيليجرام">
+
+        <span class="verified-icon" aria-hidden="true">
+
+            <!-- أيقونة علامة صح داخل درع -->
+
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+                <path d="M12 2l2.4 4.86L19.6 8l-4.2 3.46L16 16l-4-2.64L8 16l.6-4.54L4.4 8 9.6 6.86z"/>
+
+            </svg>
+
+        </span>
+
+ألمنشئ
+
+    </a>
+
+
+
+    <!-- الفيديو الرئيسي (متمركز بالضبط) -->
+
+    <div class="main-container" aria-hidden="false">
+
+        <video id="mainVideo" class="main-video" poster="thumbnail.jpg" playsinline>
+
+            <source src="PS.mp4" type="video/mp4">
+
+            متصفحك لا يدعم تشغيل الفيديو.
+
+        </video>
+
+
+
+        <!-- زر التشغيل الموجود على الفيديو -->
+
+        <div id="playBtn" class="play-btn" role="button" aria-label="تشغيل الفيديو"></div>
+
+    </div>
+
+
+
+<script>
+
+    const mainVideo = document.getElementById('mainVideo');
+
+    const playBtn = document.getElementById('playBtn');
+
+
+
+    // عند الضغط على زر التشغيل
+
+    playBtn.addEventListener('click', () => {
+
+        if (mainVideo.paused) {
+
+            mainVideo.play().catch(e => {
+
+                // بعض المتصفحات تمنع التشغيل التلقائي مع الصوت
+
+                console.warn('تعذر تشغيل الفيديو تلقائيًا:', e);
+
+            });
+
+            playBtn.style.display = 'none';
+
+        } else {
+
+            mainVideo.pause();
+
+            playBtn.style.display = 'flex';
+
+        }
+
+    });
+
+
+
+    // النقر على الفيديو يوقفه ويعيد عرض الزر
+
+    mainVideo.addEventListener('click', () => {
+
+        if (!mainVideo.paused) {
+
+            mainVideo.pause();
+
+            playBtn.style.display = 'flex';
+
+        }
+
+    });
+
+
+
+    mainVideo.addEventListener('ended', () => {
+
+        playBtn.style.display = 'flex';
+
+    });
+
+</script>
+
+
+
+</body>
+
+</html>
